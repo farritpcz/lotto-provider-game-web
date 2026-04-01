@@ -49,3 +49,37 @@ export const gameApi = {
   getHistory: (params?: Record<string, unknown>) => api.get('/history', { params }),
   getBalance: () => api.get('/balance'),
 }
+
+// =============================================================================
+// Aliases — ชื่อเดียวกับ standalone-member-web (#4) เพื่อ share pages ได้
+// =============================================================================
+export const lotteryApi = {
+  getTypes: () => api.get('/lobby'),
+  getOpenRounds: (id: number) => api.get(`/rounds/${id}`),
+  getBetTypes: (id: number) => api.get(`/rounds/${id}`), // TODO: separate endpoint
+}
+export const betApi = {
+  placeBets: (bets: Array<{ lottery_round_id: number; bet_type_code: string; number: string; amount: number }>) =>
+    api.post('/bets', { bets }),
+  getMyBets: (params?: Record<string, unknown>) => api.get('/bets', { params }),
+}
+export const resultApi = {
+  getResults: (params?: Record<string, unknown>) => api.get('/results', { params }),
+}
+export const walletApi = {
+  getBalance: () => api.get('/balance'),
+  getTransactions: (params?: Record<string, unknown>) => api.get('/history', { params }),
+}
+export const yeekeeApi = {
+  getRounds: () => api.get('/lobby'), // yeekee rounds shown in lobby
+  getShoots: (roundId: number) => api.get(`/yeekee/${roundId}/shoots`),
+}
+export const memberApi = {
+  getProfile: () => api.get('/balance'), // minimal profile
+  updateProfile: () => api.get('/balance'),
+}
+// Auth store compatibility — game client uses session token not JWT login
+export const authApi = {
+  login: () => Promise.reject('no login in game client'),
+  register: () => Promise.reject('no register in game client'),
+}
